@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +23,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> dayPlayedCards = new List<GameObject>();
     public GameObject debuffNoteModel;
     public Canvas gameCanvas;
+
+    public BoxCollider2D respawnDebuffArea;
 
     void Start()
     {
@@ -80,14 +84,15 @@ public class GameManager : MonoBehaviour
         foreach (var item in playedNote.debuffQuantity)
         {
             var currentPlayedCardList = item.isDailyDebuff ? dayPlayedCards : totalPlayedCards;
-            var auxList = currentPlayedCardList.Select(item => item.GetComponent<DisplayCard>().noteData).ToList();
+            var auxList = currentPlayedCardList.Select(item => new Tuple<ParticlesFeedback, Note> (item.GetComponent<ParticlesFeedback>(),item.GetComponent<DisplayCard>().noteData)).ToList();
             int neededIncompatibleCards = 0;
+
             foreach (var note in item.incompatibleCards)
             {
-                Note foundNote = null;
+                Tuple<ParticlesFeedback, Note> foundNote = null;
                 foreach (var aux in auxList)
                 {
-                    if (note == aux)
+                    if (note == aux.Item2)
                     {
                         neededIncompatibleCards++;
                         foundNote = aux;
@@ -99,11 +104,22 @@ public class GameManager : MonoBehaviour
                     auxList.Remove(foundNote);
                 }
             }
-            if(neededIncompatibleCards >= item.incompatibleCards.Length)
+            if (neededIncompatibleCards >= item.incompatibleCards.Length)
             {
-                var debuffCard = Instantiate(debuffNoteModel, transform.position, transform.rotation, gameCanvas.transform);
+                Vector2 respawnPossition = new Vector2(
+                                              Random.Range(respawnDebuffArea.bounds.min.x, respawnDebuffArea.bounds.max.x),
+                                              Random.Range(respawnDebuffArea.bounds.min.y, respawnDebuffArea.bounds.max.y)
+                                              );
+                var debuffCard = Instantiate(debuffNoteModel, respawnPossition, transform.rotation, gameCanvas.transform);
                 debuffCard.GetComponent<DisplayCard>().getCardData(item.generatedDebuff);
+                debuffCard.GetComponent<TakeObject>().isPlayed = true;
+                debuffCard.GetComponent<ParticlesFeedback>().BadRespawnFB();
                 sumGoalProgress(debuffCard.GetComponent<DisplayCard>().noteData);
+
+                foreach (var fb in auxList)
+                {
+                    fb.Item1.ResponsabilityFB();
+                }
 
 
                 /*if(item.destroysNote.Length > 0)

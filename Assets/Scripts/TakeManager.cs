@@ -31,6 +31,7 @@ public class TakeManager : MonoBehaviour
             {
                 selectedPiece = take;
                 selectedPiece.GetComponent<TakeObject>().selected = true;
+                selectedPiece.GetComponent<TakeObject>().SetOldPosition();
             }
 
             //if (hits.transform.CompareTag("Note"))
@@ -49,17 +50,23 @@ public class TakeManager : MonoBehaviour
             if (selectedPiece != null)
             {
                 selectedPiece.GetComponent<TakeObject>().selected = false;
-                if (!selectedPiece.GetComponent<TakeObject>().objectIsOnScreenLimit() && !selectedPiece.GetComponent<TakeObject>().isPlayed)
+                var takeSelect = selectedPiece.GetComponent<TakeObject>();
+                if (takeSelect.objectIsOnScreenLimit())
+                    takeSelect.SetTimeReturn(0.3f);
+                else
                 {
-                    if (!selectedPiece.GetComponent<DisplayCard>().noteData.isDebuff) 
+                    if(!takeSelect.isPlayed)
                     {
-                        gameManager.addPlayedNote(selectedPiece);
-                        gameManager.sumGoalProgress(selectedPiece.GetComponent<DisplayCard>().noteData);
+                        if (!selectedPiece.GetComponent<DisplayCard>().noteData.isDebuff)
+                        {
+                            gameManager.addPlayedNote(selectedPiece);
+                            gameManager.sumGoalProgress(selectedPiece.GetComponent<DisplayCard>().noteData);
+                        }
+                        selectedPiece.GetComponent<TakeObject>().isPlayed = true;
+                        playerDeck.removeCardFromDeck(selectedPiece);
+                        // assign selected piece parent to be CANVAS
+                        selectedPiece.transform.parent = selectedPiece.transform.parent.parent;
                     }
-                    selectedPiece.GetComponent<TakeObject>().isPlayed = true;
-                    playerDeck.removeCardFromDeck(selectedPiece);
-                    // assign selected piece parent to be CANVAS
-                    selectedPiece.transform.parent = selectedPiece.transform.parent.parent;
                 }
                 selectedPiece = null;
             }
