@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac55e118aac0925459833fe7ca495c21, type: 3}
+  m_Name: debuff-descompostura
+  m_EditorClassIdentifier: 
+  id: 7
+  title: Descompostura
+  description: "No se quien va a limpiar el ba\xF1o despu\xE9s.\n-10 a todos los
+    departamentos"
+  programming: -10
+  art: -10
+  design: -10
+  artwork: {fileID: 21300000, guid: 8b987e97cec93cf438c5595feea519b1, type: 3}
+  isDebuff: 1
+  debuffQuantity: []

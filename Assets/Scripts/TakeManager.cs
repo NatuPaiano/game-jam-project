@@ -6,7 +6,16 @@ using System.Linq;
 public class TakeManager : MonoBehaviour
 {
     public GameObject selectedPiece;
+    public PlayerDeck playerDeck;
+    public GameManager gameManager;
     public float verticalCorrection = -5;
+
+    private void Start()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+        playerDeck = FindObjectOfType<PlayerDeck>();  
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -40,6 +49,18 @@ public class TakeManager : MonoBehaviour
             if (selectedPiece != null)
             {
                 selectedPiece.GetComponent<TakeObject>().selected = false;
+                if (!selectedPiece.GetComponent<TakeObject>().objectIsOnScreenLimit() && !selectedPiece.GetComponent<TakeObject>().isPlayed)
+                {
+                    if (!selectedPiece.GetComponent<DisplayCard>().noteData.isDebuff) 
+                    {
+                        gameManager.addPlayedNote(selectedPiece);
+                        gameManager.sumGoalProgress(selectedPiece.GetComponent<DisplayCard>().noteData);
+                    }
+                    selectedPiece.GetComponent<TakeObject>().isPlayed = true;
+                    playerDeck.removeCardFromDeck(selectedPiece);
+                    // assign selected piece parent to be CANVAS
+                    selectedPiece.transform.parent = selectedPiece.transform.parent.parent;
+                }
                 selectedPiece = null;
             }
         }

@@ -22,7 +22,7 @@ public class ManualSorting : MonoBehaviour
 
     void Start()
     {
-        if(childWithSprites == false)
+        if (childWithSprites == false) 
             myRenderer = gameObject.GetComponent<Renderer>();
         else
         {
