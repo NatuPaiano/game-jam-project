@@ -18,6 +18,12 @@ MonoBehaviour:
   programming: 0
   art: 10
   design: 0
-  totalProgress: 0
-  noteToDelete: 0
   artwork: {fileID: 21300000, guid: 6f15c31e2040fa8459e956034381be40, type: 3}
+  isDebuff: 0
+  debuffQuantity:
+  - incompatibleCards:
+    - {fileID: 11400000}
+    - {fileID: 11400000}
+    - {fileID: 11400000}
+    generatedDebuff: {fileID: 11400000, guid: 2ab5908d548947044ae57622a8262a6e, type: 2}
+    isDailyDebuff: 0

@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Clone
+  - Note
+  - Limit
   layers:
   - Default
   - TransparentFX
@@ -41,4 +43,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Foreward
+    uniqueID: 1873064303
     locked: 0

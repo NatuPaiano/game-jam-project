@@ -14,11 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 37
   title: Scrum
-  description: "La metodolog\xEDa m\xE1s \xE1gil del lejano oeste. \n+30% de todos
+  description: "La metodolog\xEDa m\xE1s \xE1gil del lejano oeste. \n+10 de todos
     los departamentos."
-  programming: 30
-  art: 30
-  design: 30
-  totalProgress: 0
-  noteToDelete: 0
+  programming: 10
+  art: 10
+  design: 10
   artwork: {fileID: 21300000, guid: 6f15c31e2040fa8459e956034381be40, type: 3}
+  isDebuff: 0
+  debuffQuantity:
+  - incompatibleCards:
+    - {fileID: 11400000, guid: bebc491ec77459c41b81f5ae9a2f24c3, type: 2}
+    generatedDebuff: {fileID: 11400000, guid: 7647160d52f0f524bb40116eb1496198, type: 2}
+    isDailyDebuff: 1
+  - incompatibleCards:
+    - {fileID: 11400000, guid: d839b6a32d6f700449f8feb9ca566bc7, type: 2}
+    generatedDebuff: {fileID: 11400000, guid: 2cc00cb10cec9524cb42f8bfc657c76b, type: 2}
+    isDailyDebuff: 0
+  - incompatibleCards:
+    - {fileID: 11400000}
+    - {fileID: 11400000}
+    generatedDebuff: {fileID: 11400000, guid: 1f951b9887ffd8f48ab979c9e55032c9, type: 2}
+    isDailyDebuff: 1

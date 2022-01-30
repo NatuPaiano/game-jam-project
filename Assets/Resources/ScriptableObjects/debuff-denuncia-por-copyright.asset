@@ -10,15 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac55e118aac0925459833fe7ca495c21, type: 3}
-  m_Name: debuff-pareja-virtual
+  m_Name: debuff-denuncia-por-copyright
   m_EditorClassIdentifier: 
-  id: 14
-  title: Pareja virtual
-  description: "Tanto hablar con las computadoras ha reducido la capacidad social
-    de estos programadores. \n-15 arte y dise\xF1o -35 programacion"
-  programming: -35
-  art: -15
-  design: -15
-  artwork: {fileID: 21300000, guid: 6f15c31e2040fa8459e956034381be40, type: 3}
+  id: 0
+  title: Denuncia por copyright
+  description: Copiar y pegar puede hacer milagros o puede hacer desastres. -25 programacion.
+  programming: -25
+  art: 0
+  design: 0
+  artwork: {fileID: 21300000, guid: 79c9c82594de8a34d895f22568df203a, type: 3}
   isDebuff: 1
   debuffQuantity: []

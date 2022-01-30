@@ -20,4 +20,8 @@ MonoBehaviour:
   design: 0
   artwork: {fileID: 21300000, guid: 6f15c31e2040fa8459e956034381be40, type: 3}
   isDebuff: 0
-  debuffQuantity: []
+  debuffQuantity:
+  - incompatibleCards:
+    - {fileID: 11400000, guid: dbbf9f692db0df74793de3c99312c449, type: 2}
+    generatedDebuff: {fileID: 11400000, guid: 0112bb656400fd04bbc1ae3d7b6db32e, type: 2}
+    isDailyDebuff: 1
