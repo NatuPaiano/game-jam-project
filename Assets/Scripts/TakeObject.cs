@@ -42,21 +42,23 @@ public class TakeObject : MonoBehaviour
         {
             if (b.transform.gameObject.tag.Equals("Limit"))
             {
-                //transform.position = _oldPosition;
                 return true;
             }
         }
-        
         return false;
     }
-
-    private void OnMouseUp()
+    public void SetTimeReturn(float f)
     {
-        if(objectIsOnScreenLimit())
-        {
-            timeReturn = 1;
-        }
+        timeReturn = f;
     }
+
+    //private void OnMouseUp()
+    //{
+    //    if(objectIsOnScreenLimit())
+    //    {
+    //        timeReturn = 1;
+    //    }
+    //}
     private void Update()
     {
         if(timeReturn >0)
@@ -75,7 +77,7 @@ public class TakeObject : MonoBehaviour
         Vector2 pos = new Vector2(transform.position.x + boxCenter.x, transform.position.y + boxCenter.y);
         Gizmos.DrawWireCube(pos, boxUnlimit);
     }
-    private void OnMouseDown()
+    public void SetOldPosition()
     {
         _oldPosition = transform.position;
     }
