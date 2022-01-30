@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public AudioManager audioManager;
+
     public int programmingProgress = 0;
     public int artProgress = 0;
     public int designProgress = 0;
@@ -15,24 +18,46 @@ public class GameManager : MonoBehaviour
     public int designGoal = 50;
     private int totalGoalValue = 0;
 
-    public int playedDays = 0;
+    public int currentDay = 1;
+    public int totalDays = 7;
     public int cardsToNextDay = 4;
     public List<GameObject> totalPlayedCards = new List<GameObject>();
     public List<GameObject> dayPlayedCards = new List<GameObject>();
     public GameObject debuffNoteModel;
     public Canvas gameCanvas;
+    public AudioClip[] songs;
+
+    //UI
+    public TextMeshProUGUI currentDayDisplay;
+    public TextMeshProUGUI currentProgrammingProgress;
+    public TextMeshProUGUI currentArtProgress;
+    public TextMeshProUGUI currentDesignProgress;
+    public TextMeshProUGUI currentProjectGoalProgress;
+
+
+    private void Awake()
+    {
+        songs = Resources.LoadAll<AudioClip>("Sounds/Songs");
+    }
 
     void Start()
     {
+        currentDayDisplay.text = currentDay.ToString() + "/" + totalDays.ToString();
+
         programmingGoal = Random.Range(30, 70);
         artGoal = Random.Range(30, 70);
         designGoal = Random.Range(30, 70);
         totalGoalValue = programmingGoal + artGoal + designGoal;
+
+        audioManager.PlayMusic(songs[currentDay], 0.5f);
     }
 
     void Update()
     {
-        
+        currentProgrammingProgress.text = programmingProgress.ToString() + " / " + programmingGoal;
+        currentArtProgress.text = artProgress.ToString() + " / " + artGoal;
+        currentDesignProgress.text = designProgress.ToString() + " / " + designGoal;
+        currentProjectGoalProgress.text =  Mathf.RoundToInt(totalProgress * 100).ToString() + " %";
     }
 
     public void sumGoalProgress(Note note)
@@ -57,9 +82,21 @@ public class GameManager : MonoBehaviour
 
    void startNextDay()
     {
+        audioManager.StopMusic();
+        if (currentDay > totalDays)
+        {
+            endGame();
+            return;
+        }
+
         FindObjectOfType<PlayerDeck>().cleanHand();
         dayPlayedCards.Clear();
         StartCoroutine(FindObjectOfType<PlayerDeck>().StartGame());
+
+        currentDay++;
+        currentDayDisplay.text = currentDay.ToString() + "/" + totalDays.ToString();
+
+        audioManager.PlayMusic(songs[currentDay], 0.5f);
     }
 
     public void checkIfNextDayIsOn()
@@ -135,5 +172,9 @@ public class GameManager : MonoBehaviour
                 }*/
             }
         }
+    }
+    public void endGame()
+    {
+        print("ENDING GAME!");
     }
 }
