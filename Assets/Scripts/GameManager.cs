@@ -104,13 +104,35 @@ public class GameManager : MonoBehaviour
                 var debuffCard = Instantiate(debuffNoteModel, transform.position, transform.rotation, gameCanvas.transform);
                 debuffCard.GetComponent<DisplayCard>().getCardData(item.generatedDebuff);
                 sumGoalProgress(debuffCard.GetComponent<DisplayCard>().noteData);
-                if(item.destroysNote.Length > 0)
+
+
+                /*if(item.destroysNote.Length > 0)
                 {
+                    //get cards to delete
                     var playedCards = totalPlayedCards;
-                    var cardsToDelete = new List<GameObject>();
-                    var convertedList = totalPlayedCards.Select((x) => x.GetComponent<DisplayCard>().noteData).ToList();
-                    cardsToDelete = convertedList.Except(item.destroysNote);
-                }
+                    var cardsToDeleteIds = new List<int>();
+                    var totalPlayedCardsIds = totalPlayedCards.Select((playedCard) => playedCard.GetComponent<DisplayCard>().noteData.id).ToList();
+                    var destroysNoteIds = item.destroysNote.Select((destroyNote) => destroyNote.id).ToList();
+                    cardsToDeleteIds = totalPlayedCardsIds.Intersect(destroysNoteIds).ToList();
+
+                    //delete them
+                    var objectsToDestroyList = new List<GameObject>();
+                    for (int i = 0; i < totalPlayedCards.Count; i++)
+                    {
+                        if(cardsToDeleteIds.Contains(totalPlayedCards[i].GetComponent<DisplayCard>().noteData.id))
+                        {
+                            objectsToDestroyList.Add(totalPlayedCards[i]);
+                        }
+                    }
+                    foreach (var obj in objectsToDestroyList)
+                    {
+                        if (totalPlayedCards.Contains(obj))
+                        { 
+                            Destroy(obj);
+                            totalPlayedCards.Remove(obj);
+                        }
+                    }
+                }*/
             }
         }
     }

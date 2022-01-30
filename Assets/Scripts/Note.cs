@@ -23,6 +23,6 @@ public class DebuffNote
 {
 	public Note[] incompatibleCards;
 	public Note generatedDebuff;
-	public Note[] destroysNote;
+	//public Note[] destroysNote;
 	public bool isDailyDebuff;
 }
