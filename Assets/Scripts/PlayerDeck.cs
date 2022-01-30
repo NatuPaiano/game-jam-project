@@ -1,28 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayerDeck : MonoBehaviour
 {
-    public List<Card> container = new List<Card>();
-		public int x;
-		public static int deckSize;
-		public static List<Card> staticDeck = new List<Card>();
-		public List<Card> deck = new List<Card>();
+	public static int deckSize;
+	public static Note[] staticDeck;
+	private List<GameObject> currentDeck = new List<GameObject>();
 
-		public GameObject CardToHand;
-		public GameObject Hand;
+	public GameObject cardModel;
+	public GameObject Hand;
 
-		public bool playCard;
-
-		private int cardsInHandSize = 8;
-    void Start()
+	private int cardsInHandSize = 6;
+    void Awake()
     {
-		deck = CardDatabase.cardList;
-		deckSize = CardDatabase.cardList.Count;
-		Shuffle();
+		staticDeck = Resources.LoadAll<Note>("ScriptableObjects").Where(note => !note.isDebuff).ToArray();
+		deckSize = staticDeck.Length;
+		//TODO: ver esto!!!
+		//deck = CardDatabase.cardList;
+		//Shuffle();
 		/*x = 0;
-		deckSize = 40;
 		for (int i = 0; i < deckSize; i++)
 		{
 			x = Random.Range(0, CardDatabase.cardList.Count);
@@ -34,33 +32,49 @@ public class PlayerDeck : MonoBehaviour
 
     void Update()
     {
-		staticDeck = deck;
+		//staticDeck = deck;
     }
 	
-		private void putCardIntoHand()
-		{
-			Instantiate(CardToHand, transform.position, transform.rotation);
-		}
+	private void putCardIntoHand()
+	{
+		var cardInstance = Instantiate(cardModel, transform.position, transform.rotation, Hand.transform);
+		currentDeck.Add(cardInstance.gameObject);
+	}
 
-		IEnumerator StartGame()
+	public IEnumerator StartGame()
+	{
+		for (int i = 0; i < cardsInHandSize; i++)
 		{
-			for (int i = 0; i < cardsInHandSize; i++)
-			{
-				yield return new WaitForSeconds(0.5f);
-				//TODO: play a sound when we draw
-				//audioSource.PlayOneShot(draw, 1f);
-				putCardIntoHand();
-			}
+			yield return new WaitForSeconds(0.5f);
+			//TODO: play a sound when we draw
+			//audioSource.PlayOneShot(draw, 1f);
+			putCardIntoHand();
 		}
+	}
 
-		public void Shuffle()
+	public void cleanHand()
+    {
+        for (int i = 0; i < currentDeck.Count; i++)
+        {
+			Destroy(currentDeck[i]);
+        }
+		currentDeck.Clear();
+	}
+
+	public void removeCardFromDeck(GameObject cardToRemove)
+    {
+		currentDeck.Remove(cardToRemove);
+		FindObjectOfType<GameManager>().checkIfNextDayIsOn();
+    }
+
+	/*public void Shuffle()
+	{
+		for (int i = 0; i < deckSize; i++)
 		{
-			for (int i = 0; i < deckSize; i++)
-			{
-				container[0] = deck[i];
-				int randomIndex = Random.Range(i, deckSize);
-				deck[i] = deck[randomIndex];
-				deck[randomIndex] = container[0];	
-			}
+			container[0] = deck[i];
+			int randomIndex = Random.Range(i, deckSize);
+			deck[i] = deck[randomIndex];
+			deck[randomIndex] = container[0];	
 		}
+	}*/
 }

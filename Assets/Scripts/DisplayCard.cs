@@ -3,53 +3,66 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class DisplayCard : MonoBehaviour
 {
-    public List<Card> displayCard = new List<Card>();
-		public int displayId;
+	//UI
+	public TextMeshProUGUI title;
+	public TextMeshProUGUI description;
+	public SpriteRenderer artwork;
 
-		public int id;
-		public string cardName;
-		public int power;
-		public string cardDescription;
-		public Sprite spriteImage;
+	public Note noteData;
+	/*public List<Note> displayCard = new List<Note>();
+	public int displayId;*/
 
-//UI
-		public Text nameText;
-		public Text powerText;
-		public Text descriptionText;
-		public Image artImage;
+	private int id;
+	public int programming;
+	public int art;
+	public int design;
+	public int totalProgress;
+	public int noteToDelete;
 
-		//public int numberOfCardsInDeck;
+	public bool isRandomCard = true;
 
-		void Start()
-		{
-			//numberOfCardsInDeck = PlayerDeck.deckSize;
+	//public int numberOfCardsInDeck;
 
-			displayCard[0] = CardDatabase.cardList[displayId];
-		}
+	void Start()
+	{
+		if(isRandomCard)
+        {
+			getCardData();
+        }
+			fillUICardData();
+	}
 
-		void Update()
-		{
-			id = displayCard[0].id;
-			cardName = displayCard[0].cardName;
-			power = displayCard[0].power;
-			cardDescription = displayCard[0].cardDescription;
-			spriteImage = displayCard[0].spriteImage;
+	void Update()
+	{
 
-			nameText.text = " " + cardName;
-			powerText.text = " " + power;
-			descriptionText.text = " " + cardDescription;
-			artImage.sprite = spriteImage;
+	}
+	public void getCardData(Note noteModel)
+	{
+		isRandomCard = false;
+		noteData = noteModel;
+		id = noteData.id;
+		programming = noteData.programming;
+		art = noteData.art;
+		design = noteData.design;
 
-			if (this.tag == "InHand")
-			{
-				int cardIndex = Random.Range(0, PlayerDeck.deckSize);
-				displayCard[0] = PlayerDeck.staticDeck[cardIndex];
-				//numberOfCardsInDeck -= 1;
-				//PlayerDeck.deckSize -= 1;
-				this.tag = "Untagged";
-			}
-		}
+		GetComponent<TakeObject>().setColors(noteData.isDebuff);
+	}
+	void getCardData()
+	{
+		int cardIndex = Random.Range(0, PlayerDeck.deckSize);
+		noteData = PlayerDeck.staticDeck[cardIndex];
+		getCardData(noteData);
+	}
+
+	void fillUICardData ()
+    {
+		name = noteData.title;
+		title.text = noteData.title;
+		description.text = noteData.description;
+		artwork.sprite = noteData.artwork;
+	} 
 }
