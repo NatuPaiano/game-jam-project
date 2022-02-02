@@ -29,6 +29,7 @@ public class TakeManager : MonoBehaviour
                         .FirstOrDefault();
             if(take != null)
             {
+                AudioManager.Instance.PlaySFX("Sounds/SFX/despegar", 1);
                 selectedPiece = take;
                 selectedPiece.GetComponent<TakeObject>().selected = true;
                 selectedPiece.GetComponent<TakeObject>().SetOldPosition();
@@ -61,6 +62,7 @@ public class TakeManager : MonoBehaviour
                         {
                             gameManager.addPlayedNote(selectedPiece);
                             gameManager.sumGoalProgress(selectedPiece.GetComponent<DisplayCard>().noteData);
+                            selectedPiece.transform.localScale *= .65f;
                         }
                         selectedPiece.GetComponent<TakeObject>().isPlayed = true;
                         playerDeck.removeCardFromDeck(selectedPiece);
@@ -69,6 +71,7 @@ public class TakeManager : MonoBehaviour
                     }
                 }
                 selectedPiece = null;
+                AudioManager.Instance.PlaySFX("Sounds/SFX/agarrar", 1);
             }
         }
         if (selectedPiece != null)

@@ -18,6 +18,6 @@ MonoBehaviour:
   programming: -25
   art: 0
   design: 0
-  artwork: {fileID: 21300000, guid: 79c9c82594de8a34d895f22568df203a, type: 3}
+  artwork: {fileID: 21300000, guid: 0f5aad594c78ca94fb421ddd82ea865e, type: 3}
   isDebuff: 1
   debuffQuantity: []

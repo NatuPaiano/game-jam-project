@@ -20,8 +20,6 @@ MonoBehaviour:
   programming: 0
   art: -5
   design: 0
-  totalProgress: 0
-  noteToDelete: 0
-  artwork: {fileID: 21300000, guid: 6f15c31e2040fa8459e956034381be40, type: 3}
+  artwork: {fileID: 21300000, guid: 28adce09d016d1e43bc8cec947eb38eb, type: 3}
   isDebuff: 1
   debuffQuantity: []

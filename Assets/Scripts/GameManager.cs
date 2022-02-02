@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using System;
 using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,12 +30,14 @@ public class GameManager : MonoBehaviour
     public Canvas gameCanvas;
     public AudioClip[] songs;
 
+
     //UI
     public TextMeshProUGUI currentDayDisplay;
     public TextMeshProUGUI currentProgrammingProgress;
     public TextMeshProUGUI currentArtProgress;
     public TextMeshProUGUI currentDesignProgress;
     public TextMeshProUGUI currentProjectGoalProgress;
+    public Image black;
 
 
     private void Awake()
@@ -48,12 +51,14 @@ public class GameManager : MonoBehaviour
     {
         currentDayDisplay.text = currentDay.ToString() + "/" + totalDays.ToString();
 
-        programmingGoal = Random.Range(30, 70);
-        artGoal = Random.Range(30, 70);
-        designGoal = Random.Range(30, 70);
+        programmingGoal = Random.Range(70, 110);
+        artGoal = Random.Range(70, 110);
+        designGoal = Random.Range(70, 110);
         totalGoalValue = programmingGoal + artGoal + designGoal;
 
-        audioManager.PlayMusic(songs[currentDay], 0.5f);
+        audioManager.PlayMusic(songs[currentDay-1], 0.15f);
+
+        StartCoroutine(DelayBlack());
     }
 
     void Update()
@@ -87,6 +92,11 @@ public class GameManager : MonoBehaviour
    void startNextDay()
     {
         audioManager.StopMusic();
+
+        currentDay++;
+        currentDayDisplay.text = currentDay.ToString() + "/" + totalDays.ToString();
+
+        StartCoroutine(DelayBlack());
         if (currentDay > totalDays)
         {
             endGame();
@@ -97,10 +107,9 @@ public class GameManager : MonoBehaviour
         dayPlayedCards.Clear();
         StartCoroutine(FindObjectOfType<PlayerDeck>().StartGame());
 
-        currentDay++;
-        currentDayDisplay.text = currentDay.ToString() + "/" + totalDays.ToString();
 
-        audioManager.PlayMusic(songs[currentDay], 0.5f);
+        if(currentDay < songs.Length)
+            audioManager.PlayMusic(songs[currentDay-1], 0.15f);
     }
 
     public void checkIfNextDayIsOn()
@@ -151,12 +160,14 @@ public class GameManager : MonoBehaviour
                 debuffCard.GetComponent<DisplayCard>().getCardData(item.generatedDebuff);
                 debuffCard.GetComponent<TakeObject>().isPlayed = true;
                 debuffCard.GetComponent<ParticlesFeedback>().BadRespawnFB();
+                debuffCard.transform.localScale *= .65f;
+                AudioManager.Instance.PlaySFX("Sounds/SFX/arrugar", 1);
                 sumGoalProgress(debuffCard.GetComponent<DisplayCard>().noteData);
 
-                foreach (var fb in auxList)
-                {
-                    fb.Item1.ResponsabilityFB();
-                }
+                //foreach (var fb in auxList)
+                //{
+                //    fb.Item1.ResponsabilityFB();
+                //}
 
 
                 /*if(item.destroysNote.Length > 0)
@@ -191,6 +202,17 @@ public class GameManager : MonoBehaviour
     }
     public void endGame()
     {
-        print("ENDING GAME!");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(totalProgress > .9f ? "GameWin" : "GameOver");
+    }
+    IEnumerator DelayBlack()
+    {
+        float alpha = 1;
+        black.color = Color.black;
+        while(black.color.a > 0)
+        {
+            black.color = new Color(0,0,0,alpha);
+            yield return new WaitForSeconds(.1f);
+            alpha -= .1f;
+        }
     }
 }
